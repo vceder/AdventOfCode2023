@@ -1,6 +1,6 @@
-// import * as day_01 from "./src/days/day_01";
+import * as day_01 from "./src/days/day_01";
 import { readFile, scaffoldDay } from "./src/utils";
-const days = [];
+const days = [day_01];
 const prompt = "Welcome to Ceder's 2023 AoC, what would you like to do? \n$: ";
 process.stdout.write(prompt);
 
@@ -16,7 +16,7 @@ const handleInput = async (line) => {
       const input = await readFile(
         `src/data/day_${String(i + 1).toLocaleString({
           minimumIntegerDigits: 2,
-        })}`
+        })}.txt`
       );
       day.partA(input);
       day.partB(input);
@@ -26,15 +26,17 @@ const handleInput = async (line) => {
     if (day > days.length) return console.log("no time travel");
 
     const input = await readFile(
-      `src/data/day_${String(i + 1).toLocaleString({
+      `src/data/day_${String(day).toLocaleString({
         minimumIntegerDigits: 2,
-      })}`
+      })}.txt`
     );
     if (part) {
-      days[day][part === "a" ? "partA" : "partB"](input);
+      console.log(
+        days[Number(day) - 1][part === "a" ? "partA" : "partB"](input)
+      );
     } else {
-      days[day].partA(input);
-      days[day].partB(input);
+      console.log(days[Number(day) - 1].partA(input));
+      console.log(days[Number(day) - 1].partB(input));
     }
   } else if (line.startsWith("gen")) {
     const [, day] = line.split(" ");
