@@ -4,7 +4,7 @@ export const readFile = (path) =>
     .then((data) => data.split("\n"));
 
 export const isNumber = (char) => "0123456789".includes(char);
-
+export const sum = (sum, value) => (sum += Number(value));
 export const getFirstAndLast = (values = [], current, index, source) =>
   index === 0 || source.length - 1 === index ? [...values, current] : values;
 

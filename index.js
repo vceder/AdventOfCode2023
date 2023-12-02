@@ -1,6 +1,8 @@
 import * as day_01 from "./src/days/day_01";
+import * as day_02 from "./src/days/day_02";
+
 import { readFile, scaffoldDay } from "./src/utils";
-const days = [day_01];
+const days = [day_01, day_02];
 const prompt = "Welcome to Ceder's 2023 AoC, what would you like to do? \n$: ";
 process.stdout.write(prompt);
 
