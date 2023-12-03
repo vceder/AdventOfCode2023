@@ -5,6 +5,7 @@ export const readFile = (path) =>
 
 export const isNumber = (char) => "0123456789".includes(char);
 export const sum = (sum, value) => (sum += Number(value));
+export const product = (product, value) => product * Number(value);
 export const getFirstAndLast = (values = [], current, index, source) =>
   index === 0 || source.length - 1 === index ? [...values, current] : values;
 
@@ -61,11 +62,11 @@ import { partA, partB } from './day_${formattedDay}.js';
 const input = "";
 
 test('day ${formattedDay} Part A should return the correct value', () => {
-  expect(partA(input)).toEqual("")
+  expect(partA(input)).toEqual(undefined)
 });  
 
 test('day ${formattedDay} Part B should return the correct value', () => {
-  expect(partB(input)).toEqual("")
+  expect(partB(input)).toEqual(undefined)
 });
   `;
   const codeScaffold = `export const partA = (input) => {};
