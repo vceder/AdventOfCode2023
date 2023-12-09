@@ -95,54 +95,6 @@ const convertSeedRangeToLocationRange = (startRange, maps) => {
   return done;
 };
 
-const convertSeedRangeToLocationRangeRecursive = (
-  seedRange, // {start, end}
-  maps,
-  type = "seed"
-) => {
-  const table = maps.find(({ from }) => from === type);
-  // console.log("going down:", type);
-  if (table === undefined) {
-    // console.log(`bottom found, returning ${seedRange}`);
-    return seedRange;
-  }
-
-  const conversion = table.conversion.find(({ start, end }) => {
-    // console.log(start <= seedRange.start);
-    // console.log(seedRange.start <= end);
-    return start <= seedRange.start && seedRange.start <= end;
-  });
-  // console.log(conversion);
-  if (conversion === undefined) {
-    // console.log("no conversion found");
-    return convertSeedRangeToLocationRangeRecursive(seedRange, maps, table.to);
-  }
-  if (conversion.end >= seedRange.end) {
-    // console.log("whole range was in conversion");
-    return convertSeedRangeToLocationRangeRecursive(
-      {
-        start: conversion.output + seedRange.start - conversion.start,
-        end: conversion.output + seedRange.end - conversion.start,
-      },
-      maps,
-      table.to
-    );
-  } else {
-    const first = {
-      start: conversion.output + seedRange.start - conversion.start,
-      end: conversion.output + conversion.end - conversion.start,
-    };
-    const second = { start: conversion.end, end: seedRange.end };
-    // console.log("splitting range");
-    // console.log(first);
-    // console.log(second);
-    return [
-      convertSeedRangeToLocationRangeRecursive(first, maps, conversion.to),
-      convertSeedRangeToLocationRangeRecursive(second, maps, type),
-    ];
-  }
-};
-
 export const partA = (input) => {
   const data = input.join("\n").split("\n\n");
   const maps = buildConversionTable(data);
@@ -152,29 +104,6 @@ export const partA = (input) => {
     .map((seed) => convertSeedToLocation(seed, maps))
     .sort((a, b) => a - b)[0];
 };
-
-// export const partB = (input) => {
-//   // const seedsRange = getSeeds(input);
-//   const seedsRange = [1778931867, 1436999653];
-//   const data = input.join("\n").split("\n\n");
-//   const maps = buildConversionTable(data);
-
-//   let seeds = [];
-//   for (let index = 0; index < seedsRange.length; index += 2) {
-//     const seedStart = seedsRange[index];
-//     const range = seedsRange[index + 1];
-//     seeds = [
-//       ...seeds,
-//       ...new Array(range).fill(seedStart).map((value, i) => value + i),
-//     ];
-//   }
-//   console.log(seeds);
-//   // console.log(seedsRange.filter((_, i) => !(i % 2)));
-//   return seedsRange
-//     .filter((_, i) => !(i % 2))
-//     .map((seed) => convertSeedToLocation(seed, maps))
-//     .sort((a, b) => a - b)[0];
-// };
 
 export const partB = (input) => {
   const data = input.join("\n").split("\n\n");
@@ -186,12 +115,10 @@ export const partB = (input) => {
     }
     return [...seeds, { start: seed, end: 0 }];
   }, []);
-  return (
-    seeds
-      .map((seedRange) => convertSeedRangeToLocationRange(seedRange, maps))
-      .flat()
-      // .map(({ start }) => start)
-      .sort((a, b) => a.start - b.start)[0].start
-  ); // 107430936 <- too high
-  // return maps;
+  return seeds
+    .map((seedRange) => convertSeedRangeToLocationRange(seedRange, maps))
+    .flat()
+    .sort((a, b) => a.start - b.start)[0].start;
+  // 107430936 <- too high
+  //23738616
 };
