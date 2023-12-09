@@ -6,9 +6,21 @@ import * as day_05 from "./src/days/day_05";
 import * as day_06 from "./src/days/day_06";
 import * as day_07 from "./src/days/day_07";
 import * as day_08 from "./src/days/day_08";
+import * as day_09 from "./src/days/day_09";
 
 import { readFile, scaffoldDay } from "./src/utils";
-const days = [day_01, day_02, day_03, day_04, day_05, day_06, day_07, day_08];
+
+const days = [
+  day_01,
+  day_02,
+  day_03,
+  day_04,
+  day_05,
+  day_06,
+  day_07,
+  day_08,
+  day_09,
+];
 const prompt = "Welcome to Ceder's 2023 AoC, what would you like to do? \n$: ";
 process.stdout.write(prompt);
 
