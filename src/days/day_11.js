@@ -82,9 +82,9 @@ const getDistanceBetweenExpandingGalaxies = (
       (col) => b.row <= col && col <= a.row
     ).length;
   }
-  console.log(
-    `${a.row} [${expansionRows}] ${b.row} = ${yDistance + rowExpansion}`
-  );
+  // console.log(
+  //   `${a.row} [${expansionRows}] ${b.row} = ${yDistance + rowExpansion}`
+  // );
 
   return (
     xDistance +
