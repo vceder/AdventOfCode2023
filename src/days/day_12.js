@@ -10,7 +10,7 @@ const validateCombination = (combination, structure) =>
 const getAllCombinations = (input) => {
   const chars = ["#", "."];
   const index = input.indexOf("?");
-
+  // console.log(input);
   if (index === -1) return [input];
 
   return chars.flatMap((char) =>
@@ -18,10 +18,12 @@ const getAllCombinations = (input) => {
   );
 };
 
-export const getPossibleCombinations = (input, structure) =>
-  getAllCombinations(input).filter((combination) =>
+export const getPossibleCombinations = (input, structure, index) => {
+  // if (index) console.log(index, input);
+  return getAllCombinations(input).filter((combination) =>
     validateCombination(combination, structure)
   );
+};
 
 export const partA = (input) =>
   input
@@ -30,15 +32,18 @@ export const partA = (input) =>
       ([input, structure]) => getPossibleCombinations(input, structure).length
     )
     .reduce(sum, 0);
+
 const expand = (input, times = 5) => new Array(times).fill(input);
+
 export const partB = (input) =>
   input
     .map((row) => row.split(" "))
     .map(([springs, conditions]) => [
-      expand(springs).join("?"),
-      expand(conditions).join(","),
+      expand(springs, 2).join("?"),
+      expand(conditions, 2).join(","),
     ])
     .map(
-      ([input, structure]) => getPossibleCombinations(input, structure).length
+      ([input, structure], i) =>
+        getPossibleCombinations(input, structure, i).length
     )
     .reduce(sum, 0);
