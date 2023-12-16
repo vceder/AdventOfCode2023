@@ -1,6 +1,6 @@
 import { expect, test } from "bun:test";
 
-import { partA, partB } from "./day_08.js";
+import { findLeastCommonMultiple, partA, partB } from "./day_08.js";
 
 const input_1 = [
   "RL",
@@ -40,4 +40,8 @@ test("day 08 Part A should return the correct value", () => {
 
 test("day 08 Part B should return the correct value", () => {
   expect(partB(input_b)).toEqual(6);
+});
+
+test("should find least common multiples", () => {
+  expect(findLeastCommonMultiple([3, 7, 9])).toEqual(63);
 });
