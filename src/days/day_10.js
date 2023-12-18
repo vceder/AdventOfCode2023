@@ -86,31 +86,31 @@ const getEnclosed = (loop, matrix) => {
   //   }
   //   return rows;
   // }, []);
-  const rows = {};
-  for (let index = 0; index < loop.length; index++) {
-    const element = loop[index];
-    if (rows[element.y]) rows[element.y].push(element);
-    else rows[element.y] = [element];
-  }
+  // const rows = {};
+  // for (let index = 0; index < loop.length; index++) {
+  //   const element = loop[index];
+  // if (rows[element.y]) rows[element.y].push(element);
+  // else rows[element.y] = [element];
+  // }
 
   // console.log(rows);
   // Object.values(rows).forEach((row) => console.log(row[0].y, row.length));
-  const formatted = Object.values(rows).map(
-    (row) => row.toSorted((a, b) => a.x - b.x)
-    // .map((node) => node.char)
-    // .join("")
-  );
-  const lengths = formatted.map((row) =>
-    row.reduce(
-      (total, current, i) =>
-        i % 2 == 0
-          ? (total += row[i + 1] ? row[i + 1].x - current.x - 1 : 0)
-          : total,
-      0
-    )
-  );
-  console.log(lengths);
-  return lengths;
+  // const formatted = Object.values(rows).map(
+  //   (row) => row.toSorted((a, b) => a.x - b.x)
+  // .map((node) => node.char)
+  // .join("")
+  // );
+  // const lengths = formatted.map((row) =>
+  //   row.reduce(
+  //     (total, current, i) =>
+  //       i % 2 == 0
+  //         ? (total += row[i + 1] ? row[i + 1].x - current.x - 1 : 0)
+  //         : total,
+  //     0
+  //   )
+  // );
+  // console.log(lengths);
+  // return lengths;
   // rows.forEach((row) => console.log(row.length, row[0].y));
   // for (let y = 0; y < rows.length; y++) {
   //   for (let x = 0; x < rows[y].length; x += 2) {
@@ -124,6 +124,29 @@ const getEnclosed = (loop, matrix) => {
   //   }
   // }
   // console.log(rows);
+  // console.log(loop);
+  const area = [];
+  for (let row = 0; row < matrix.length; row++) {
+    let isInside = false;
+    const inside = [];
+    for (let col = 0; col < matrix[0].length; col++) {
+      const element = matrix[row][col];
+      if (loop.some(({ x, y }) => element.x === x && element.y === y)) {
+        isInside = !isInside;
+        continue;
+      }
+      if (isInside) {
+        // console.log(
+        //   `found inside element row: ${row} col: ${col} element: ${element.char}`
+        // );
+        inside.push(element);
+      }
+      // console.log(element);
+    }
+    if (!isInside) area.push(inside);
+  }
+  // console.log(area);
+  return area;
 };
 
 const buildLoop = (start, matrix) => {
@@ -145,5 +168,7 @@ export const partB = (input) => {
   const start = findChar("S", matrix);
   calculateConnections(matrix[start.y][start.x], matrix);
   const loop = buildLoop(start, matrix);
-  return getEnclosed(loop, matrix).reduce(sum, 0);
+  return getEnclosed(loop, matrix)
+    .map((row) => row.length)
+    .reduce(sum, 0);
 };
