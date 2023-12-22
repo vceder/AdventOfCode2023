@@ -55,15 +55,15 @@ test("should set the correct cords to inside and outside", () => {
   // setInsideOutside(matrix);
   setInsideOutside(smallMatrix);
 
-  console.log(
-    smallMatrix
-      .map((row) =>
-        row
-          .map(({ edge, inside }) => (edge ? "X" : inside ? "#" : "."))
-          .join("")
-      )
-      .join("\n")
-  );
+  // console.log(
+  //   smallMatrix
+  //     .map((row) =>
+  //       row
+  //         .map(({ edge, inside }) => (edge ? "X" : inside ? "#" : "."))
+  //         .join("")
+  //     )
+  //     .join("\n")
+  // );
 
   expect(
     smallMatrix

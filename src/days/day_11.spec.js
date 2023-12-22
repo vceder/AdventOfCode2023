@@ -5,6 +5,7 @@ import {
   expandSpace,
   generatePairs,
   getDistanceBetweenGalaxies,
+  getDistanceBetweenExpandingGalaxies,
   partA,
   partB,
 } from "./day_11.js";
@@ -83,6 +84,28 @@ test("should calculate the correct distance between a galaxy pair", () => {
   expect(getDistanceBetweenGalaxies(eight, nine)).toEqual(5);
 });
 
+test("should calculate the correct distance between expanding galaxy pairs", () => {
+  const one = { row: 0, column: 3, number: 1 };
+  const three = { row: 2, column: 0, number: 3 };
+  const five = { row: 5, column: 1, number: 5 };
+  const six = { row: 6, column: 9, number: 6 };
+  const seven = { row: 8, column: 7, number: 7 };
+  const eight = { row: 9, column: 0, number: 8 };
+  const nine = { row: 9, column: 4, number: 9 };
+  expect(
+    getDistanceBetweenExpandingGalaxies(one, seven, [2, 5, 8], [3, 7], 2)
+  ).toEqual(15);
+  expect(
+    getDistanceBetweenExpandingGalaxies(three, six, [2, 5, 8], [3, 7], 2)
+  ).toEqual(17);
+  expect(
+    getDistanceBetweenExpandingGalaxies(five, nine, [2, 5, 8], [3, 7], 2)
+  ).toEqual(9);
+  expect(
+    getDistanceBetweenExpandingGalaxies(eight, nine, [2, 5, 8], [3, 7], 2)
+  ).toEqual(5);
+});
+
 test("should generate the correct pairs", () => {
   const starMap = expandSpace(input.map((row) => row.split("")));
   const galaxies = countAndMarkGalaxies(starMap);
@@ -90,5 +113,6 @@ test("should generate the correct pairs", () => {
 });
 
 test("day 11 Part B should return the correct value", () => {
-  expect(partB(input)).toEqual(undefined);
+  expect(partB(input, 10)).toEqual(1030);
+  expect(partB(input, 100)).toEqual(8410);
 });

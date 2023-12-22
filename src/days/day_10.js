@@ -89,11 +89,6 @@ const findEnclosedPoints = (matrix) => {
           2 !==
         0
       ) {
-        console.log(
-          `found inside at ${row} ${col} ${element} ${matrix[row]
-            .slice(0, col)
-            .filter((char) => "|JL".includes(char))}`
-        );
         inside.push([row, col]);
       }
     }
