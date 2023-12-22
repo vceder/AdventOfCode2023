@@ -14,6 +14,8 @@ import * as day_13 from "./src/days/day_13";
 import * as day_14 from "./src/days/day_14";
 import * as day_15 from "./src/days/day_15";
 import * as day_16 from "./src/days/day_16";
+import * as day_17 from "./src/days/day_17";
+import * as day_18 from "./src/days/day_18";
 
 import { readFile, scaffoldDay } from "./src/utils";
 
@@ -34,6 +36,8 @@ const days = [
   day_14,
   day_15,
   day_16,
+  day_17,
+  day_18,
 ];
 const prompt = "Welcome to Ceder's 2023 AoC, what would you like to do? \n$: ";
 process.stdout.write(prompt);
