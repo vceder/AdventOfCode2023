@@ -77,76 +77,28 @@ const getNext = (previousDirection, node, matrix, notStart = false) => {
   ];
 };
 
-const getEnclosed = (loop, matrix) => {
-  // const rows = loop.reduce((rows, node) => {
-  //   if (rows?.at(-1)?.at(-1)?.y === node.y) {
-  //     rows.at(-1).push(node);
-  //   } else {
-  //     rows.push([node]);
-  //   }
-  //   return rows;
-  // }, []);
-  // const rows = {};
-  // for (let index = 0; index < loop.length; index++) {
-  //   const element = loop[index];
-  // if (rows[element.y]) rows[element.y].push(element);
-  // else rows[element.y] = [element];
-  // }
-
-  // console.log(rows);
-  // Object.values(rows).forEach((row) => console.log(row[0].y, row.length));
-  // const formatted = Object.values(rows).map(
-  //   (row) => row.toSorted((a, b) => a.x - b.x)
-  // .map((node) => node.char)
-  // .join("")
-  // );
-  // const lengths = formatted.map((row) =>
-  //   row.reduce(
-  //     (total, current, i) =>
-  //       i % 2 == 0
-  //         ? (total += row[i + 1] ? row[i + 1].x - current.x - 1 : 0)
-  //         : total,
-  //     0
-  //   )
-  // );
-  // console.log(lengths);
-  // return lengths;
-  // rows.forEach((row) => console.log(row.length, row[0].y));
-  // for (let y = 0; y < rows.length; y++) {
-  //   for (let x = 0; x < rows[y].length; x += 2) {
-  //     const left = rows[y][x];
-  //     const right = rows[y][x + 1];
-  //     // console.log(rows[y]);
-  //     // console.log(left);
-  //     // console.log(right);
-
-  //     console.log("diff:", right.x - left.x);
-  //   }
-  // }
-  // console.log(rows);
-  // console.log(loop);
-  const area = [];
+const findEnclosedPoints = (matrix) => {
+  const inside = [];
   for (let row = 0; row < matrix.length; row++) {
-    let isInside = false;
-    const inside = [];
-    for (let col = 0; col < matrix[0].length; col++) {
+    for (let col = 0; col < matrix[row].length; col++) {
       const element = matrix[row][col];
-      if (loop.some(({ x, y }) => element.x === x && element.y === y)) {
-        isInside = !isInside;
-        continue;
+      if (element !== ".") continue;
+      if (
+        matrix[row].slice(0, col).filter((char) => "|JL".includes(char))
+          .length %
+          2 !==
+        0
+      ) {
+        console.log(
+          `found inside at ${row} ${col} ${element} ${matrix[row]
+            .slice(0, col)
+            .filter((char) => "|JL".includes(char))}`
+        );
+        inside.push([row, col]);
       }
-      if (isInside) {
-        // console.log(
-        //   `found inside element row: ${row} col: ${col} element: ${element.char}`
-        // );
-        inside.push(element);
-      }
-      // console.log(element);
     }
-    if (!isInside) area.push(inside);
   }
-  // console.log(area);
-  return area;
+  return inside;
 };
 
 const buildLoop = (start, matrix) => {
@@ -154,6 +106,18 @@ const buildLoop = (start, matrix) => {
     .reverse()
     .find((direction) => start[direction]);
   return getNext(startingDirection, start, matrix);
+};
+
+const replaceS = (loop) => {
+  const sIndex = loop.findIndex(({ char }) => char === "S");
+  loop[sIndex].char = Object.entries(connections).find(
+    ([_, con]) =>
+      loop[sIndex].north === !!con.north &&
+      loop[sIndex].east === !!con.east &&
+      loop[sIndex].south === !!con.south &&
+      loop[sIndex].west === !!con.west
+  )[0];
+  return loop;
 };
 
 export const partA = (input) => {
@@ -167,8 +131,28 @@ export const partB = (input) => {
   const matrix = buildMatrix(input);
   const start = findChar("S", matrix);
   calculateConnections(matrix[start.y][start.x], matrix);
-  const loop = buildLoop(start, matrix);
-  return getEnclosed(loop, matrix)
-    .map((row) => row.length)
-    .reduce(sum, 0);
+  const loop = replaceS(buildLoop(start, matrix));
+  // console.log(
+  //   matrix
+  //     .map((row) =>
+  //       row
+  //         .map(
+  //           ({ x, y }) =>
+  //             loop.find((node) => node.x === x && node.y === y)?.char ?? "."
+  //         )
+  //         .join("")
+  //     )
+  //     .join("\n")
+  // );
+
+  // 564 <- too high
+  // 563 <- just right
+  return findEnclosedPoints(
+    matrix.map((row) =>
+      row.map(
+        ({ x, y }) =>
+          loop.find((node) => node.x === x && node.y === y)?.char ?? "."
+      )
+    )
+  ).length;
 };
